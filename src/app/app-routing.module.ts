@@ -6,8 +6,15 @@ import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
+import { TestPageComponent } from './pages/test-page/test-page.component';
+import { EstadoCidadeModule } from './shared/components/estado-cidade/estado-cidade.component';
 
 const routes: Routes = [
+  {
+    path: 'pages/test-page',
+    component: TestPageComponent,
+    canActivate: [ AuthGuardService ]
+  },
   {
     path: 'tasks',
     component: TasksComponent,
@@ -50,13 +57,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule],
+  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule, EstadoCidadeModule],
   providers: [AuthGuardService],
   exports: [RouterModule],
   declarations: [
     HomeComponent,
     ProfileComponent,
-    TasksComponent
+    TasksComponent,
+    TestPageComponent
   ]
 })
 export class AppRoutingModule { }

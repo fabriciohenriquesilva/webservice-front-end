@@ -17,5 +17,10 @@ export const navigation = [
         path: '/tasks'
       }
     ]
+  },
+  {
+    text: 'Estado Cidade',
+    path: '/pages/test-page',
+    icon: 'map'
   }
 ];
