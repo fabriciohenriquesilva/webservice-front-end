@@ -1,8 +1,9 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DxFormModule } from 'devextreme-angular';
+import { DxFormModule, DxSelectBoxModule } from 'devextreme-angular';
 import { EstadoCidadeService } from '../../services';
-import { HttpClient } from '@angular/common/http';
+import { Estado } from './../models/estado';
+import { Cidade } from './../models/cidade';
 
 @Component({
   selector: 'app-estado-cidade',
@@ -12,29 +13,43 @@ import { HttpClient } from '@angular/common/http';
 export class EstadoCidadeComponent implements OnInit {
 
   localidade = {
-    estado: ['MG', 'SP'],
-    cidade: ['Unai', 'São Paulo']
+    estado: null,
+    cidade: null
   };
 
-  estados!: string[];
+  estados!: Estado[];
+  cidades!: Cidade[];
+  estado!: Estado;
+  cidade!: Cidade;
 
-  constructor(private service: EstadoCidadeService, private http: HttpClient) {
-
-    this.service.getEstados()
-      .subscribe(dados => {
-        this.estados = dados.map(e => e.sigla);
-      });
-
+  constructor(private service: EstadoCidadeService) {
+    this.service.getEstados().subscribe(data => {
+      this.estados = data;
+      this.localidade.estado = this.buscarEstadoInicial(data);
+    });
   }
 
   ngOnInit(): void {
-
   };
+
+  buscarEstadoInicial(estados: any) {
+    return estados
+      .filter((estado: Estado) => estado.sigla == 'MG')
+      .map((estado: Estado) => estado.id)
+      .pop();
+  }
+
+  buscarCidades(event: any) {
+    this.service.getCidadesPorEstado(event.value)
+      .subscribe((data: Cidade[]) => {
+        this.cidades = data;
+      });
+  }
 }
 
 @NgModule({
   declarations: [EstadoCidadeComponent],
-  imports: [CommonModule, DxFormModule],
+  imports: [CommonModule, DxFormModule, DxSelectBoxModule],
   exports: [EstadoCidadeComponent]
 })
 export class EstadoCidadeModule { }
