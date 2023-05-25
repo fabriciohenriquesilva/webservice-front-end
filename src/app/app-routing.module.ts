@@ -10,6 +10,7 @@ import { TestPageComponent } from './pages/test-page/test-page.component';
 import { EstadoCidadeModule } from './shared/components/estado-cidade/estado-cidade.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
 import { ClienteModule } from './shared/components/cliente/cliente.module';
+import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
   {
@@ -65,7 +66,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule,
+  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule, CommonModule,
     EstadoCidadeModule, ClienteModule],
   providers: [AuthGuardService],
   exports: [RouterModule],
