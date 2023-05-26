@@ -1,11 +1,13 @@
 <h3>Lista de Clientes</h3>
 
-<div>
+<div class="action-group">
   <dx-button
+    class="btn-cadastrar"
     stylingMode="contained"
     text="Cadastrar"
     type="default"
-    [width]="120"></dx-button>
+    [width]="120"
+    (onClick)="cadastrarCliente($event)"></dx-button>
 </div>
 
 <dx-data-grid

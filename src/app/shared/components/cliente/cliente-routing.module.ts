@@ -13,6 +13,13 @@ const routes: Routes = [
     resolve: {
       cliente: ClienteResolverGuard
     }
+  },
+  {
+    path: 'novo',
+    component: ClienteFormComponent,
+    resolve: {
+      cliente: ClienteResolverGuard
+    }
   }
 ];
 

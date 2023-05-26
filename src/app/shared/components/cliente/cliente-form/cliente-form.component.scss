@@ -1,0 +1,8 @@
+div {
+  margin-top: 2rem;
+  display: flex;
+}
+
+div dx-button:not(:first-child) {
+  margin-left: 1rem;
+}
