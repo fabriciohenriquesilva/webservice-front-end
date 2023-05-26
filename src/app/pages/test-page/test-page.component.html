@@ -1,6 +1,12 @@
 <h2 class="content-block">Estado Cidade</h2>
 <div class="content-block">
     <div class="dx-card responsive-paddings">
-        <app-estado-cidade></app-estado-cidade>
+        <app-estado-cidade 
+        [cidade]="cidade"
+        [estado]="estado"
+        (estadoEmitter)="atualizarEstado($event)" 
+        (cidadeEmitter)="atualizarCidade($event)">
+    </app-estado-cidade>
+        {{ estado.nome }} - {{ cidade.nome }}
     </div>
 </div>

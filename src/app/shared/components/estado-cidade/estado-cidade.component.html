@@ -1,26 +1,24 @@
 <dx-form
-    [formData]="localidade"
     colCount="2">
-
     <dxi-item>
         <dxo-label text="Estado"></dxo-label>
-        <dx-select-box [items]="estados" 
-            displayExpr="nome" 
-            valueExpr="id"
+        <dx-select-box [items]="estados"
+            displayExpr="nome"
             placeholder="Selecione o estado"
             [searchEnabled]="true"
-            [(value)]="localidade.estado"
-            (onValueChanged)="buscarCidades($event)">
+            [(value)]="estado"
+            (onValueChanged)="carregarCidadesOnSelect($event)">
         </dx-select-box>
     </dxi-item>
     <dxi-item>
         <dxo-label text="Cidade"></dxo-label>
         <dx-select-box [items]="cidades"
             displayExpr="nome"
-            valueExpr="id"
+            valueExpr="this"
             placeholder="Selecione a cidade"
-            [(value)]="localidade.cidade"
-            [searchEnabled]="true">
+            [(value)]="cidade"
+            [searchEnabled]="true"
+            (onValueChanged)="emitirNovaCidade($event)">
         </dx-select-box>
     </dxi-item>
 </dx-form>

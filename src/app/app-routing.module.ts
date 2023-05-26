@@ -8,8 +8,17 @@ import { TasksComponent } from './pages/tasks/tasks.component';
 import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
 import { TestPageComponent } from './pages/test-page/test-page.component';
 import { EstadoCidadeModule } from './shared/components/estado-cidade/estado-cidade.component';
+import { ClientesComponent } from './pages/clientes/clientes.component';
+import { ClienteModule } from './shared/components/cliente/cliente.module';
+import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
+  {
+    path: 'pages/clientes',
+    component: ClientesComponent,
+    loadChildren: () => import('./shared/components/cliente/cliente.module').then(m => m.ClienteModule),
+    canActivate: [ AuthGuardService ]
+  },
   {
     path: 'pages/test-page',
     component: TestPageComponent,
@@ -51,20 +60,23 @@ const routes: Routes = [
     canActivate: [ AuthGuardService ]
   },
   {
-    path: '**',
+    path: '',
+    pathMatch: 'full',
     redirectTo: 'home'
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule, EstadoCidadeModule],
+  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule, CommonModule,
+    EstadoCidadeModule, ClienteModule],
   providers: [AuthGuardService],
   exports: [RouterModule],
   declarations: [
     HomeComponent,
     ProfileComponent,
     TasksComponent,
-    TestPageComponent
+    TestPageComponent,
+    ClientesComponent
   ]
 })
 export class AppRoutingModule { }

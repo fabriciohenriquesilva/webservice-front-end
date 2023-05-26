@@ -22,5 +22,10 @@ export const navigation = [
     text: 'Estado Cidade',
     path: '/pages/test-page',
     icon: 'map'
+  },
+  {
+    text: 'Clientes',
+    path: '/pages/clientes',
+    icon: 'group'
   }
 ];
