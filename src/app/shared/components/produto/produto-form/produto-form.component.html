@@ -1,0 +1,33 @@
+<h3>Cadastro de Produto</h3>
+
+<div class="btn-action-group">
+  <dx-button
+    type="success"
+    text="Salvar"
+    icon="save"
+    [useSubmitBehavior]="false"
+    (onClick)="salvar()"
+  ></dx-button>
+
+  <dx-button
+    type="normal"
+    text="Voltar"
+    icon="revert"
+    (onClick)="voltar()"
+  ></dx-button>
+
+  <dx-button
+    type="danger"
+    text="Excluir"
+    icon="trash"
+    (onClick)="excluir()"
+  ></dx-button>
+</div>
+
+<dx-form [formData]="produto">
+  <dxi-item dataField="codigo"></dxi-item>
+  <dxi-item dataField="descricao"></dxi-item>
+  <dxi-item dataField="valorUnitario"></dxi-item>
+</dx-form>
+
+

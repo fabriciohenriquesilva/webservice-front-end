@@ -9,7 +9,9 @@ import { DxDataGridModule, DxFormModule } from 'devextreme-angular';
 import { TestPageComponent } from './pages/test-page/test-page.component';
 import { EstadoCidadeModule } from './shared/components/estado-cidade/estado-cidade.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
+import { ProdutosComponent } from './pages/produtos/produtos.component';
 import { ClienteModule } from './shared/components/cliente/cliente.module';
+import { ProdutoModule } from './shared/components/produto/produto.module';
 import { CommonModule } from '@angular/common';
 
 const routes: Routes = [
@@ -17,6 +19,12 @@ const routes: Routes = [
     path: 'pages/clientes',
     component: ClientesComponent,
     loadChildren: () => import('./shared/components/cliente/cliente.module').then(m => m.ClienteModule),
+    canActivate: [ AuthGuardService ]
+  },
+  {
+    path: 'pages/produtos',
+    component: ProdutosComponent,
+    loadChildren: () => import('./shared/components/produto/produto.module').then(m => m.ProdutoModule),
     canActivate: [ AuthGuardService ]
   },
   {
@@ -67,8 +75,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true }), DxDataGridModule, DxFormModule, CommonModule,
-    EstadoCidadeModule, ClienteModule],
+  imports: [
+    RouterModule.forRoot(routes, { useHash: true }),
+    DxDataGridModule,
+    DxFormModule,
+    CommonModule,
+    EstadoCidadeModule,
+    ClienteModule,
+    ProdutoModule
+  ],
   providers: [AuthGuardService],
   exports: [RouterModule],
   declarations: [
@@ -76,7 +91,8 @@ const routes: Routes = [
     ProfileComponent,
     TasksComponent,
     TestPageComponent,
-    ClientesComponent
+    ClientesComponent,
+    ProdutosComponent
   ]
 })
 export class AppRoutingModule { }
