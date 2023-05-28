@@ -32,5 +32,10 @@ export const navigation = [
      text: 'Produtos',
      path: '/pages/produtos',
      icon: 'tags'
-   }
+   },
+  {
+    text: 'Notas Fiscais',
+    path: '/pages/notas-fiscais',
+    icon: 'textdocument'
+  }
 ];
