@@ -1,0 +1,50 @@
+<h3>Lista de Produtos</h3>
+
+<div class="action-group">
+  <dx-button
+    class="btn-cadastrar"
+    stylingMode="contained"
+    text="Cadastrar"
+    icon="plus"
+    type="default"
+    (onClick)="cadastrarProduto()"></dx-button>
+</div>
+
+<dx-data-grid
+  id="gridContainer"
+  [dataSource]="produtos"
+  keyExpr="id"
+  [showBorders]="true"
+  [remoteOperations]="{ paging: true }"
+  [hoverStateEnabled]="true">
+
+  <dxo-editing
+    mode="form"
+    [allowUpdating]="false"
+    [useIcons]="true"
+  ></dxo-editing>
+
+  <dxo-selection mode="single"></dxo-selection>
+  <dxo-paging *ngIf="page" [pageSize]="20"></dxo-paging>
+  <dxo-pager
+    [visible]="true"
+    [showPageSizeSelector]="true"
+    [showInfo]="true"
+    [allowedPageSizes]="[10, 20, 50]"
+  ></dxo-pager>
+
+  <dxi-column type="buttons">
+    <dxi-button
+      text="Visualizar"
+      icon="edit"
+      hint="Visualizar e detalhar ações"
+      [onClick]="detalhar"
+      >
+    </dxi-button>
+  </dxi-column>
+
+  <dxi-column dataField="codigo"></dxi-column>
+  <dxi-column dataField="descricao"></dxi-column>
+  <dxi-column dataField="valorUnitario"></dxi-column>
+
+</dx-data-grid>

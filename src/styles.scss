@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+.action-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-cadastrar {
+  margin-bottom: 1rem;
+}

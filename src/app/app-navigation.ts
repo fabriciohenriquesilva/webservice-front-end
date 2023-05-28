@@ -27,5 +27,10 @@ export const navigation = [
     text: 'Clientes',
     path: '/pages/clientes',
     icon: 'group'
-  }
+  },
+   {
+     text: 'Produtos',
+     path: '/pages/produtos',
+     icon: 'tags'
+   }
 ];
