@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { Produto } from './../models/produto';
 import { ProdutoService } from './../produto.service';
+import {NotificacaoService} from "../../../services/notificacao.service";
 
 @Component({
   selector: 'app-produto-form',
@@ -18,7 +19,8 @@ export class ProdutoFormComponent implements OnInit {
     private service: ProdutoService,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private notificacaoService: NotificacaoService
   ) { }
 
   ngOnInit(): void {
@@ -27,7 +29,12 @@ export class ProdutoFormComponent implements OnInit {
 
   salvar() {
     this.service.save(this.produto)
-      .subscribe();
+      .subscribe({
+        next: (data) => {
+          this.notificacaoService.mostrarSucesso('Salvo com sucesso!');
+          console.log(data);
+        }
+      });
     this.voltar();
   }
 
@@ -37,8 +44,15 @@ export class ProdutoFormComponent implements OnInit {
 
   excluir() {
     this.service.remove(this.produto.id!)
-      .subscribe();
-    this.voltar();
+      .subscribe({
+        next: () => {
+          this.notificacaoService.mostrarSucesso('Excluído com sucesso!');
+          setTimeout( () => this.voltar(), 2000);
+        },
+        error: (e) => {
+          this.notificacaoService.mostrarErro(e.error.mensagem);
+        }
+      });
   }
 
 }

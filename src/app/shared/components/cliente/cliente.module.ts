@@ -8,9 +8,21 @@ import { ClienteFormComponent } from './cliente-form/cliente-form.component';
 import { ClienteComponent } from './cliente.component';
 
 @NgModule({
-  declarations: [ClienteComponent, ClienteFormComponent],
-  imports: [CommonModule, ClienteRoutingModule, DxDataGridModule, DxButtonModule, DxFormModule],
-  exports: [ClienteComponent, ClienteFormComponent],
+  declarations: [
+    ClienteComponent,
+    ClienteFormComponent
+  ],
+  imports: [
+    CommonModule,
+    ClienteRoutingModule,
+    DxDataGridModule,
+    DxButtonModule,
+    DxFormModule
+  ],
+  exports: [
+    ClienteComponent,
+    ClienteFormComponent
+  ],
   providers: [ClienteService]
 })
 export class ClienteModule { }

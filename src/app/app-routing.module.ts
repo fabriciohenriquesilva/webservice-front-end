@@ -13,8 +13,16 @@ import { ProdutosComponent } from './pages/produtos/produtos.component';
 import { ClienteModule } from './shared/components/cliente/cliente.module';
 import { ProdutoModule } from './shared/components/produto/produto.module';
 import { CommonModule } from '@angular/common';
+import { NotasFiscaisComponent } from './pages/notas-fiscais/notas-fiscais.component';
+import { NotaFiscalModule } from './shared/components/nota-fiscal/nota-fiscal.module';
 
 const routes: Routes = [
+  {
+    path: 'pages/notas-fiscais',
+    component: NotasFiscaisComponent,
+    loadChildren: () => import('./shared/components/nota-fiscal/nota-fiscal.module').then(m => m.NotaFiscalModule),
+    canActivate: [ AuthGuardService ]
+  },
   {
     path: 'pages/clientes',
     component: ClientesComponent,
@@ -68,7 +76,7 @@ const routes: Routes = [
     canActivate: [ AuthGuardService ]
   },
   {
-    path: '',
+    path: '**',
     pathMatch: 'full',
     redirectTo: 'home'
   }
@@ -92,7 +100,8 @@ const routes: Routes = [
     TasksComponent,
     TestPageComponent,
     ClientesComponent,
-    ProdutosComponent
+    ProdutosComponent,
+    NotasFiscaisComponent
   ]
 })
 export class AppRoutingModule { }

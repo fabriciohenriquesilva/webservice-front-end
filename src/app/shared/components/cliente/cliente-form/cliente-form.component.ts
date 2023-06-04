@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Cliente } from './../models/cliente';
 import { ClienteService } from './../cliente.service';
+import {NotificacaoService} from "../../../services/notificacao.service";
 
 @Component({
   selector: 'app-cliente-form',
@@ -16,7 +17,8 @@ export class ClienteFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: ClienteService
+    private service: ClienteService,
+    private notificacaoService: NotificacaoService
   ) {
      this.cliente = this.route.snapshot.data['cliente'];
   }
@@ -27,7 +29,12 @@ export class ClienteFormComponent implements OnInit {
   salvar() {
     console.log(this.cliente);
     this.service.save(this.cliente)
-      .subscribe( data => console.log(data));
+      .subscribe( {
+        next: (data) => {
+          this.notificacaoService.mostrarSucesso('Salvo com sucesso!');
+          console.log(data);
+        }
+      });
     this.voltar();
   }
 
@@ -38,8 +45,15 @@ export class ClienteFormComponent implements OnInit {
   excluir() {
     console.log(this.cliente);
     this.service.remove(this.cliente)
-      .subscribe();
-    this.voltar();
+      .subscribe({
+        next: () => {
+          this.notificacaoService.mostrarSucesso('Excluído com sucesso!');
+          setTimeout( () => this.voltar(), 2000);
+        },
+        error: (e) => {
+          this.notificacaoService.mostrarErro(e.error.mensagem);
+        }
+      });
   }
 
 }
