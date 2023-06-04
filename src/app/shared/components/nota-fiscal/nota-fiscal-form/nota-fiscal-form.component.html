@@ -77,7 +77,8 @@
         mode="popup"
         [allowUpdating]="true"
         [allowDeleting]="true"
-        [allowAdding]="true">
+        [allowAdding]="true"
+        [useIcons]="true">
 
         <dxo-popup
           title="Cadastro do item"
@@ -112,6 +113,18 @@
       <dxi-column dataField="quantidade" [setCellValue]="atualizarPrecoTotalPelaQuantidade"></dxi-column>
       <dxi-column dataField="valorUnitario" [setCellValue]="atualizarPrecoTotalPeloPrecoUnitario"></dxi-column>
       <dxi-column dataField="valorTotal" [allowEditing]="false"></dxi-column>
+      <dxi-column type="buttons">
+        <dxi-button
+          name="edit"
+          hint="Visualizar e detalhar ações"
+        >
+        </dxi-button>
+        <dxi-button
+        name="delete"
+        hint="Excluir item"
+      >
+      </dxi-button>
+      </dxi-column>
 
     </dx-data-grid>
   </dxi-item>

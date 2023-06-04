@@ -1,14 +1,15 @@
-import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+import {ActivatedRoute} from '@angular/router';
 
-import { NotaFiscal } from './../models/nota-fiscal';
-import { Cliente } from './../../cliente/models/cliente';
-import { ClienteService } from './../../cliente/cliente.service';
-import { Produto } from './../../produto/models/produto';
-import { ProdutoService } from './../../produto/produto.service';
-import { lastValueFrom } from "rxjs";
-import { NotaFiscalService } from "../nota-fiscal.service";
+import {NotaFiscal} from './../models/nota-fiscal';
+import {Cliente} from './../../cliente/models/cliente';
+import {ClienteService} from './../../cliente/cliente.service';
+import {Produto} from './../../produto/models/produto';
+import {ProdutoService} from './../../produto/produto.service';
+import {lastValueFrom} from "rxjs";
+import {NotaFiscalService} from "../nota-fiscal.service";
+import {NotificacaoService} from "../../../services/notificacao.service";
 
 @Component({
   selector: 'app-nota-fiscal-form',
@@ -29,6 +30,7 @@ export class NotaFiscalFormComponent implements OnInit {
     private clienteService: ClienteService,
     private produtoService: ProdutoService,
     private service: NotaFiscalService,
+    private notificacaoService: NotificacaoService
   ) {
     this.atualizarValoresDoItemNaGrade = this.atualizarValoresDoItemNaGrade.bind(this);
   }
@@ -36,14 +38,14 @@ export class NotaFiscalFormComponent implements OnInit {
   ngOnInit(): void {
     this.notaFiscal = this.route.snapshot.data['notaFiscal'];
 
-    if(!this.notaFiscal.itens) {
+    if (!this.notaFiscal.itens) {
       this.notaFiscal.itens = [];
     }
 
     this.clienteService.list().subscribe(
       (data: any) => {
         this.clientes = data.content;
-        this.cliente = this.clientes.find( (cliente) => cliente.id == this.notaFiscal?.cliente?.id )!
+        this.cliente = this.clientes.find((cliente) => cliente.id == this.notaFiscal?.cliente?.id)!
       }
     );
 
@@ -56,7 +58,12 @@ export class NotaFiscalFormComponent implements OnInit {
 
   salvar() {
     console.log(this.notaFiscal);
-    this.service.save(this.notaFiscal).subscribe();
+    this.service.save(this.notaFiscal).subscribe({
+      next: (data) => {
+        this.notificacaoService.mostrarSucesso('Salvo com sucesso!');
+        console.log(data);
+      }
+    });
   }
 
   voltar() {
@@ -69,7 +76,16 @@ export class NotaFiscalFormComponent implements OnInit {
   }
 
   excluir() {
-    this.service.remove(this.notaFiscal.id!);
+    this.service.remove(this.notaFiscal.id!)
+      .subscribe({
+        next: () => {
+          this.notificacaoService.mostrarSucesso('Excluído com sucesso!');
+          setTimeout(() => this.voltar(), 2000);
+        },
+        error: (e) => {
+          this.notificacaoService.mostrarErro(e.error.mensagem);
+        }
+      });
   }
 
   setCliente(event: any) {
@@ -83,11 +99,11 @@ export class NotaFiscalFormComponent implements OnInit {
   atualizarValoresDoItemNaGrade(newData: any, value: any, currentRowData: any) {
 
     return lastValueFrom(this.buscarProduto(value))
-      .then( data => {
+      .then(data => {
         newData.produto = data;
         newData.valorUnitario = data.valorUnitario;
         newData.notaFiscal = this.notaFiscal.numero;
-        if(currentRowData.quantidade) {
+        if (currentRowData.quantidade) {
           newData.valorTotal = newData.valorUnitario * currentRowData.quantidade;
         }
       });
@@ -95,14 +111,14 @@ export class NotaFiscalFormComponent implements OnInit {
 
   atualizarPrecoTotalPelaQuantidade(newData: any, value: any, currentRowData: any) {
     newData.quantidade = value;
-    if(value) {
+    if (value) {
       newData.valorTotal = currentRowData.valorUnitario * value;
     }
   }
 
   atualizarPrecoTotalPeloPrecoUnitario(newData: any, value: any, currentRowData: any) {
     newData.valorUnitario = value;
-    if(value) {
+    if (value) {
       newData.valorTotal = currentRowData.quantidade * value;
     }
   }
@@ -110,7 +126,7 @@ export class NotaFiscalFormComponent implements OnInit {
   calcularValorTotalDaNota(event: any) {
     console.log(event.data);
     const valorTotal = this.notaFiscal.itens?.map(item => item.valorTotal!)
-      .reduce( ((soma, valor) => soma += valor), 0);
+      .reduce(((soma, valor) => soma += valor), 0);
     this.notaFiscal.valorTotal = valorTotal!;
   }
 
