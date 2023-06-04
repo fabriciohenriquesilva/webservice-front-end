@@ -19,8 +19,8 @@ export class EstadoCidadeComponent implements OnInit {
   @Input() cidade!: Cidade;
   @Input() estado!: Estado;
 
-  @Output() estadoEmitter = new EventEmitter<Estado>();
-  @Output() cidadeEmitter = new EventEmitter<Cidade>();
+  @Output() estadoChange = new EventEmitter<Estado>();
+  @Output() cidadeChange = new EventEmitter<Cidade>();
 
   constructor(private service: EstadoCidadeService) { }
 
@@ -48,14 +48,14 @@ export class EstadoCidadeComponent implements OnInit {
 
   carregarCidadesOnSelect(event: any) {
     const estadoSelecionado: Estado = event.value;
-    this.estadoEmitter.emit(estadoSelecionado);
-    this.cidadeEmitter.emit({});
+    this.estadoChange.emit(estadoSelecionado);
+    this.cidadeChange.emit({});
     this.buscarCidades(estadoSelecionado.id!);
   }
 
   emitirNovaCidade(event: any) {
     const cidadeSelecionada = event.value;
-    this.cidadeEmitter.emit(cidadeSelecionada);
+    this.cidadeChange.emit(cidadeSelecionada);
   }
 
   private buscarCidades(id: number) {

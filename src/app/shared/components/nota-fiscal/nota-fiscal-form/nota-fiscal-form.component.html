@@ -1,1 +1,119 @@
-<p>nota-fiscal-form works!</p>
+<h3>Cadastro de Nota Fiscal</h3>
+
+<div class="btn-action-group">
+  <dx-button
+    type="success"
+    text="Salvar"
+    icon="save"
+    [useSubmitBehavior]="false"
+    (onClick)="salvar()"
+  ></dx-button>
+
+  <dx-button
+    type="default"
+    text="Salvar e Fechar"
+    icon="save"
+    [useSubmitBehavior]="false"
+    (onClick)="salvarEFechar()"
+  ></dx-button>
+
+  <dx-button
+    type="normal"
+    text="Voltar"
+    icon="revert"
+    (onClick)="voltar()"
+  ></dx-button>
+
+  <dx-button
+    type="danger"
+    text="Excluir"
+    icon="trash"
+    (onClick)="excluir()"
+  ></dx-button>
+</div>
+
+<dx-form [formData]="notaFiscal" colCount="2">
+
+  <dxi-item dataField="numero" editorType="dxNumberBox"></dxi-item>
+
+  <dxi-item>
+    <dxo-label text="Data"></dxo-label>
+    <dx-date-box [(value)]="notaFiscal.data!"></dx-date-box>
+  </dxi-item>
+
+  <dxi-item>
+    <dxo-label text="Valor Total (R$)"></dxo-label>
+    <dx-number-box
+      [(value)]="notaFiscal.valorTotal!"
+      format="decimal"
+      [readOnly]="true"
+    ></dx-number-box>
+  </dxi-item>
+
+  <dxi-item>
+    <dxo-label text="Cliente"></dxo-label>
+    <dx-select-box
+      [items]="clientes"
+      placeholder="Selecione o cliente..."
+      valueExpr="this"
+      displayExpr="nome"
+      [value]="cliente"
+      (onValueChanged)="setCliente($event)"
+    ></dx-select-box>
+  </dxi-item>
+
+  <dxi-item colSpan="2">
+    <dx-data-grid
+      [allowColumnResizing]="true"
+      [columnAutoWidth]="true"
+      [dataSource]="notaFiscal.itens"
+      keyExpr="id"
+      [showBorders]="true"
+      (onRowUpdated)="calcularValorTotalDaNota($event)"
+      (onRowInserted)="calcularValorTotalDaNota($event)"
+      (onRowRemoved)="calcularValorTotalDaNota($event)">
+
+      <dxo-editing
+        mode="popup"
+        [allowUpdating]="true"
+        [allowDeleting]="true"
+        [allowAdding]="true">
+
+        <dxo-popup
+          title="Cadastro do item"
+          [showTitle]="true"
+          [width]="700"
+          [height]="525"
+        ></dxo-popup>
+
+        <dxo-form>
+          <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+            <dxi-item dataField="produto.id" [colSpan]="2" placeholder="Busque o produto pela descrição..."></dxi-item>
+            <dxi-item dataField="numeroSequencial"></dxi-item>
+            <dxi-item dataField="quantidade"></dxi-item>
+            <dxi-item dataField="valorUnitario"></dxi-item>
+            <dxi-item dataField="valorTotal"></dxi-item>
+          </dxi-item>
+        </dxo-form>
+
+      </dxo-editing>
+
+      <dxi-column dataField="numeroSequencial" sortOrder="asc"></dxi-column>
+
+      <dxi-column dataField="produto.id" caption="Produto" [setCellValue]="atualizarValoresDoItemNaGrade">
+        <dxo-lookup
+          [dataSource]="produtos"
+          placeholder="Busque o produto pela descrição..."
+          valueExpr="id"
+          displayExpr="descricao"
+        ></dxo-lookup>
+      </dxi-column>
+
+      <dxi-column dataField="quantidade" [setCellValue]="atualizarPrecoTotalPelaQuantidade"></dxi-column>
+      <dxi-column dataField="valorUnitario" [setCellValue]="atualizarPrecoTotalPeloPrecoUnitario"></dxi-column>
+      <dxi-column dataField="valorTotal" [allowEditing]="false"></dxi-column>
+
+    </dx-data-grid>
+  </dxi-item>
+
+</dx-form>
