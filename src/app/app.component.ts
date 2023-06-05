@@ -1,7 +1,8 @@
 import { Component, HostBinding } from '@angular/core';
 import { AuthService, ScreenService, AppInfoService } from './shared/services';
 
-import { locale } from "devextreme/localization";
+import {loadMessages, locale} from "devextreme/localization";
+import * as brMessages from "devextreme/localization/messages/pt.json";
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent  {
 
   constructor(private authService: AuthService, private screen: ScreenService, public appInfo: AppInfoService) {
     locale('pt-BR');
+    loadMessages(brMessages);
   }
 
   isAuthenticated() {
